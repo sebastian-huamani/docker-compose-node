@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+    api:
+      build:
+        context: ./node_api
+        dockerfile: Dockerfile
+      environment:
+        VIRTUAL_HOST: api.domain.com
+      image: node_api:v1
+      container_name: service_api
+      restart: unless-stopped
+      working_dir: /var/www/
+      volumes:
+        - ./:/var/www
+      networks:
+        - oregano
+    web:
+      build:
+        context: ./node_web
+        dockerfile: Dockerfile
+      environment:
+        VIRTUAL_HOST: web.domain.com
+      image: node_app:v1
+      container_name: service_app
+      restart: unless-stopped
+      working_dir: /var/www/
+      volumes:
+        - ./:/var/www
+      networks:
+        - oregano
+networks:
+  oregano:
+    driver: bridge
+ 
